@@ -1,0 +1,1 @@
+# wycena_gpw
