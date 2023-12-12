@@ -144,6 +144,38 @@ get_companies_links <- function(table_url){
 
 
 #' @export
+get_companies_links_bilans <- function(table_url){
+  
+  table_path <- '//*[@id="right-content"]/div/table'
+  
+  set_config(add_headers(`User-Agent` = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36"))
+  
+  get_delayed <- slowly(~ GET(.), 
+                        rate = rate_delay(3))
+  
+  get_result <- get_delayed(table_url)
+  
+  raw_html <- read_html(get_result)
+  
+  companies <- raw_html |> html_elements(xpath = table_path) |> html_table()
+  companies <- companies[[1]] |> clean_names() |>
+    separate(col = profil, into = c("ticker", "name"), sep = " ") |> select(ticker) |> 
+    filter(nchar(ticker) == 3)
+  
+  c_links <- tibble(link = paste0("https://www.biznesradar.pl", 
+                                  raw_html |> html_elements(xpath = table_path)  |> 
+                                    html_elements(".bvalue") |> html_elements("a") |> html_attr("href"),
+                                  ",", "Q"))
+  
+  c_links <- c_links |> filter(link != "https://www.biznesradar.pl/raporty-finansowe-bilans/SVRS,Q")
+  
+  companies$link <- c_links$link
+  companies
+  
+}
+
+
+#' @export
 clean_rzis <- function(tb){
   tb |> clean_names() |> rotate_df(cn = TRUE) |> as_tibble() |> clean_names() |> 
     mutate(data_publikacji = as.Date(data_publikacji)) |>
