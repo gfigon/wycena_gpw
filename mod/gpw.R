@@ -177,11 +177,27 @@ get_companies_links_bilans <- function(table_url){
 
 #' @export
 clean_rzis <- function(tb){
-  tb |> clean_names() |> rotate_df(cn = TRUE) |> as_tibble() |> clean_names() |> 
+  tb |> clean_names() |> rotate_df(cn = TRUE) |> as_tibble(.name_repair = "unique") |> clean_names() |> 
     mutate(data_publikacji = as.Date(data_publikacji)) |>
     mutate(across(przychody_ze_sprzedazy:ebitda, str_remove_all, " ")) |> 
     mutate(across(przychody_ze_sprzedazy:ebitda, parse_number)) |> na.omit() 
 }
+
+
+#' @export
+clean_bilans <- function(tb){
+  tb |> 
+    clean_names() |> mutate(x = paste0(x, 1:nrow(tb))) |> 
+    rotate_df(cn = TRUE) |> as_tibble() |> clean_names() |> 
+    mutate(data_publikacji1 = as.Date(data_publikacji1)) |> 
+    mutate(across(aktywa_trwale2:pasywa_razem36, str_remove_all, " ")) |> 
+    mutate(across(aktywa_trwale2:pasywa_razem36, parse_number)) |> 
+    select(-wartosc_firmy4, -aktywa_z_tytulu_prawa_do_uzytkowania6) |> na.omit() 
+    
+    
+    
+}
+
 
 
 
