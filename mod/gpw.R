@@ -215,7 +215,7 @@ clean_rzis <- function(tb){
   tb |> clean_names() |> rotate_df(cn = TRUE) |> as_tibble(.name_repair = "unique") |> clean_names() |> 
     mutate(data_publikacji = as.Date(data_publikacji)) |>
     mutate(across(przychody_ze_sprzedazy:ebitda, str_remove_all, " ")) |> 
-    mutate(across(przychody_ze_sprzedazy:ebitda, parse_number)) |> na.omit() 
+    mutate(across(przychody_ze_sprzedazy:ebitda, parse_number)) 
 }
 
 
@@ -227,7 +227,7 @@ clean_bilans <- function(tb){
     mutate(data_publikacji1 = as.Date(data_publikacji1)) |> 
     mutate(across(aktywa_trwale2:pasywa_razem36, str_remove_all, " ")) |> 
     mutate(across(aktywa_trwale2:pasywa_razem36, parse_number)) |> 
-    select(-wartosc_firmy4, -aktywa_z_tytulu_prawa_do_uzytkowania6) |> na.omit() 
+    select(-wartosc_firmy4, -aktywa_z_tytulu_prawa_do_uzytkowania6)  
     
     
     
@@ -240,8 +240,7 @@ clean_cf <- function(tb){
     rotate_df(cn = TRUE) |> as_tibble() |> clean_names() |> 
     mutate(data_publikacji = as.Date(data_publikacji)) |> 
     mutate(across(przeplywy_pieniezne_z_dzialalnosci_operacyjnej:free_cash_flow, str_remove_all, " ")) |> 
-    mutate(across(przeplywy_pieniezne_z_dzialalnosci_operacyjnej:free_cash_flow, parse_number)) |> 
-    na.omit() 
+    mutate(across(przeplywy_pieniezne_z_dzialalnosci_operacyjnej:free_cash_flow, parse_number)) 
   
   
   
