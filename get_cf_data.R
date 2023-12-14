@@ -1,4 +1,4 @@
-box::unload(gpw)
+#box::unload(gpw)
 library(tidyverse)
 box::use(./mod/gpw)
 
@@ -24,10 +24,13 @@ tabele_clean <- map(tabele, gpw$clean_cf)
 for(t in 1:length(tabele_clean)){
   
   print(t)
-  tabele_clean[[t]] <- tabele_clean[[t]] |> mutate(ticker = companies_links_tmp$ticker[t])
+  tabele_clean[[t]] <- tabele_clean[[t]] |> mutate(ticker = comapnies_link_tmp$ticker[t])
   
   
 }
+
+
+tmp4 <- bind_rows(tabele_clean)
 
 
 
