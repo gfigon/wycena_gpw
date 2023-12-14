@@ -17,7 +17,7 @@ box::use(httr[...],
 
 
 
-#' @export
+#' 
 stooq_dw <- function(symbol, close_only = TRUE){
   
   s_link <- "https://stooq.pl/q/d/l/?s="
